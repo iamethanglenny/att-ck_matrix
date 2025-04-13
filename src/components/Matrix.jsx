@@ -17,6 +17,12 @@ const Matrix = () => {
     setSelectedTechnique(technique);
   };
 
+  const scrollMatrix = (direction) => {
+    const matrix = document.querySelector(`.${styles.matrix}`);
+    const scrollAmount = direction === 'left' ? -300 : 300;
+    matrix.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+  };
+
   return (
     <div className={styles.container}>
       <header className={styles.header}>
@@ -37,33 +43,33 @@ const Matrix = () => {
 
         {/* Filter Section */}
         <div className={styles.filterSection}>
-          <div className={styles.filterTitle}>Filter by:</div>
-          <div className={styles.filterBar}>
+          <div className={styles.filterControls}>
+            <div className={styles.filterTitle}>Filter by:</div>
             <select className={styles.filterSelect}>
               <option value="">Actor/Threat Group</option>
               {filterOptions.actors.map((actor) => (
-                <option key={actor} value={actor}>{actor}</option>
+                <option key={actor} value={`APT ${actor}`}>{actor}</option>
               ))}
             </select>
 
             <select className={styles.filterSelect}>
               <option value="">Region</option>
               {filterOptions.regions.map((region) => (
-                <option key={region} value={region}>{region}</option>
+                <option key={region} value={`North ${region}`}>{region}</option>
               ))}
             </select>
 
             <select className={styles.filterSelect}>
               <option value="">Industry</option>
               {filterOptions.industries.map((industry) => (
-                <option key={industry} value={industry}>{industry}</option>
+                <option key={industry} value={`Finance ${industry}`}>{industry}</option>
               ))}
             </select>
 
+            <div className={styles.filterTitle}>Date filter:</div>
             <div className={styles.dateFilter}>
               <input
                 type="text"
-                className={styles.dateInput}
                 placeholder="start"
                 onFocus={(e) => e.target.type = 'date'}
                 onBlur={(e) => {
@@ -73,13 +79,16 @@ const Matrix = () => {
               <span>—</span>
               <input
                 type="text"
-                className={styles.dateInput}
                 placeholder="end"
                 onFocus={(e) => e.target.type = 'date'}
                 onBlur={(e) => {
                   if (!e.target.value) e.target.type = 'text';
                 }}
               />
+            </div>
+            <div className={styles.exportControls}>
+              <button className={styles.exportButton}>CSV</button>
+              <button className={styles.exportButton}>JSON</button>
             </div>
           </div>
         </div>
@@ -96,6 +105,24 @@ const Matrix = () => {
               <span className={styles.attackCount}>{type.count}</span>
             </button>
           ))}
+        </div>
+
+        {/* Navigation Controls */}
+        <div className={styles.navigationControls}>
+          <button 
+            className={styles.navigationButton}
+            onClick={() => scrollMatrix('left')}
+            aria-label="Scroll left"
+          >
+            ‹
+          </button>
+          <button 
+            className={styles.navigationButton}
+            onClick={() => scrollMatrix('right')}
+            aria-label="Scroll right"
+          >
+            ›
+          </button>
         </div>
       </header>
 

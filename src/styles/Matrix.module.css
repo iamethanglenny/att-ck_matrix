@@ -61,57 +61,165 @@
 }
 
 .filterSection {
-  margin: 1rem 0;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex: 1;
+  position: relative;
+  padding-right: 200px;
 }
 
 .filterTitle {
   color: #a9b1d6;
   font-size: 0.9rem;
-  margin-bottom: 0.5rem;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  margin-right: 0.75rem;
 }
 
-.filterBar {
+.filterControls {
   display: flex;
-  gap: 1rem;
-  padding: 1rem 0;
   align-items: center;
+  gap: 0.75rem;
 }
 
 .filterSelect {
-  background-color: #24283b;
+  background: none;
   border: 1px solid #414868;
   color: #a9b1d6;
-  padding: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  padding-right: 30px;
   border-radius: 4px;
-  min-width: 150px;
+  width: auto;
+  min-width: 140px;
+  transition: all 0.2s;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  cursor: pointer;
+  position: relative;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23a9b1d6' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 8px center;
+  background-size: 16px;
+}
+
+.filterSelect::-ms-expand {
+  display: none;
+}
+
+.filterSelect:hover {
+  border-color: #fff;
+  color: #fff;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
 }
 
 .dateFilter {
   display: flex;
-  gap: 0.5rem;
   align-items: center;
+  gap: 0.5rem;
 }
 
-.dateInput {
-  background-color: #24283b;
+.dateFilter input,
+.dateFilter input[type="date"] {
+  width: 100px;  /* Reduced from auto/120px to match date field size */
+  padding: 0.5rem 0.75rem;
+  background: none;
   border: 1px solid #414868;
   color: #a9b1d6;
-  padding: 0.5rem;
   border-radius: 4px;
-  width: 120px;
+  box-sizing: border-box;
+  transition: all 0.2s;
+  font-family: inherit;
+  font-size: 0.9rem;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
 }
 
-.dateInput::placeholder {
+.dateFilter input::placeholder {
   color: #a9b1d6;
-  opacity: 0.7;
+  transition: color 0.2s;
+}
+
+.dateFilter input:hover {
+  border-color: #fff;
+  color: #fff;
+}
+
+.dateFilter input:hover::placeholder {
+  color: #fff;
+}
+
+/* Specific styles for the start date input */
+.dateFilter input:first-child {
+  cursor: pointer;
+}
+
+/* Specific styles for the end date input */
+.dateFilter input:last-child {
+  background-image: none;
+  cursor: pointer;
+}
+
+/* Calendar picker styles */
+.dateFilter input[type="date"]:first-child::-webkit-calendar-picker-indicator {
+  display: none;
+}
+
+.dateFilter input[type="date"]::-webkit-inner-spin-button,
+.dateFilter input[type="date"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.navigationControls {
+  display: inline-flex;
+  gap: 0.5rem;
+  position: absolute;
+  right: 2rem;
+  margin-top: 1rem;
+}
+
+.navigationButton {
+  background: none;
+  border: 1px solid #414868;
+  color: #a9b1d6;
+  padding: 0.5rem 0.75rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1.2rem;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 35px;
+  line-height: 1;
+}
+
+.navigationButton:hover {
+  border-color: #fff;
+  color: #fff;
+}
+
+.techniqueCount {
+  color: #fff;
+  padding: 0.15rem 0.5rem;
+  font-size: 0.75rem;
+  min-width: 24px;
+  text-align: center;
+  flex-shrink: 0;
 }
 
 .attackTypeNav {
   display: inline-flex;
   gap: 1rem;
   margin-top: 1rem;
-  border-bottom: 1px solid #2f3447;
   padding-bottom: 1rem;
+  border-bottom: 1px solid #2f3447;
+  position: relative;
+  width: 100%;
 }
 
 .attackTypeButton {
@@ -160,6 +268,7 @@
   overflow-x: auto;
   gap: 1.5rem;
   min-height: calc(100vh - 200px);
+  position: relative;
 }
 
 .tacticColumn {
@@ -236,13 +345,40 @@
   border-color: rgba(65, 72, 104, 0.5);
 }
 
-.techniqueCount {
-  background-color: rgba(65, 72, 104, 0.5);
-  color: #fff;
-  padding: 0.15rem 0.5rem;
+/* Add a container for the navigation row */
+.navigationRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid #2f3447;
+}
+
+/* Add specific margin after the industry button */
+.filterSelect:has(option[value^="Finance"]) {
+  margin-right: 10px;
+}
+
+.exportControls {
+  display: flex;
+  gap: 0.5rem;
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.exportButton {
+  background: none;
+  border: 1px solid #414868;
+  color: #a9b1d6;
+  padding: 0.5rem 1rem;
   border-radius: 4px;
-  font-size: 0.75rem;
-  min-width: 24px;
-  text-align: center;
-  flex-shrink: 0;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.2s;
+}
+
+.exportButton:hover {
+  border-color: #fff;
+  color: #fff;
 } 
