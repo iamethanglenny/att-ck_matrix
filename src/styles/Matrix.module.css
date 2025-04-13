@@ -317,29 +317,6 @@
   line-height: 1.4;
 }
 
-/* Color coding for different tactics - simplified to 3 colors */
-/* Blue tactics (65%) */
-.tacticColumn[data-tactic="Reconnaissance"] .techniqueItem,
-.tacticColumn[data-tactic="Resource Development"] .techniqueItem,
-.tacticColumn[data-tactic="Execution"] .techniqueItem,
-.tacticColumn[data-tactic="Persistence"] .techniqueItem,
-.tacticColumn[data-tactic="Discovery"] .techniqueItem,
-.tacticColumn[data-tactic="Credential Access"] .techniqueItem {
-  border-left-color: #4F9EED;
-}
-
-/* Yellow tactics (20%) */
-.tacticColumn[data-tactic="Initial Access"] .techniqueItem,
-.tacticColumn[data-tactic="Privilege Escalation"] .techniqueItem {
-  border-left-color: #FCC537;
-}
-
-/* Red tactics (15%) */
-.tacticColumn[data-tactic="Defense Evasion"] .techniqueItem,
-.tacticColumn[data-tactic="Lateral Movement"] .techniqueItem {
-  border-left-color: #FC5B3B;
-}
-
 .techniqueItem:hover {
   background-color: rgba(65, 72, 104, 0.3);
   border-color: rgba(65, 72, 104, 0.5);

@@ -1,16 +1,30 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import styles from '../styles/Matrix.module.css';
-import { mockTactics, filterOptions } from '../data/mockData';
+import { mockTactics, mobileMockTactics, icsMockTactics, filterOptions } from '../data/mockData';
 import TechniqueDetail from './TechniqueDetail';
 
 const Matrix = () => {
   const [activeAttackType, setActiveAttackType] = useState('enterprise');
   const [selectedTechnique, setSelectedTechnique] = useState(null);
 
+  // Determine which data set to use based on activeAttackType
+  const currentTactics = useMemo(() => {
+    switch (activeAttackType) {
+      case 'mobile':
+        return mobileMockTactics;
+      case 'ics':
+        return icsMockTactics; // Use the new ICS data
+      case 'enterprise':
+      default:
+        return mockTactics;
+    }
+  }, [activeAttackType]);
+
+  // Calculate total techniques for each attack type
   const attackTypes = [
-    { id: 'enterprise', label: 'Enterprise attack', count: 277 },
-    { id: 'mobile', label: 'Mobile attack', count: 11 },
-    { id: 'ics', label: 'ICS attack', count: 0 }
+    { id: 'enterprise', label: 'Enterprise attack', count: mockTactics.reduce((sum, t) => sum + t.techniques.length, 0) },
+    { id: 'mobile', label: 'Mobile attack', count: mobileMockTactics.reduce((sum, t) => sum + t.techniques.length, 0) },
+    { id: 'ics', label: 'ICS attack', count: icsMockTactics.reduce((sum, t) => sum + t.techniques.length, 0) } // Use actual ICS count
   ];
 
   const handleTechniqueClick = (technique) => {
@@ -128,7 +142,7 @@ const Matrix = () => {
 
       {/* Matrix Grid */}
       <div className={styles.matrix}>
-        {mockTactics.map((tactic) => (
+        {currentTactics.map((tactic) => (
           <div 
             key={tactic.name} 
             className={styles.tacticColumn}
@@ -137,20 +151,45 @@ const Matrix = () => {
             <h2 className={styles.tacticHeader}>{tactic.name}</h2>
             <span className={styles.tacticCount}>{tactic.techniques.length} techniques</span>
             <div className={styles.techniqueList}>
-              {tactic.techniques.map((technique) => (
-                <div
-                  key={technique.name}
-                  className={styles.techniqueItem}
-                  onClick={() => handleTechniqueClick(technique)}
-                >
-                  <span className={styles.techniqueName}>{technique.name}</span>
-                  {technique.count > 0 && (
-                    <span className={styles.techniqueCount}>
-                      {technique.count}
-                    </span>
-                  )}
-                </div>
-              ))}
+              {tactic.techniques.map((technique) => {
+                // Assign a weighted random color (50% blue, 25% yellow, 25% red)
+                const colors = {
+                  blue: '#4F9EED',
+                  yellow: '#FCC537',
+                  red: '#FC5B3B'
+                };
+                let randomColor;
+                let colorName;
+                const rand = Math.random();
+
+                if (rand < 0.50) { // 50% chance for blue
+                  randomColor = colors.blue;
+                  colorName = 'blue';
+                } else if (rand < 0.75) { // 25% chance for yellow (0.50 to 0.75)
+                  randomColor = colors.yellow;
+                  colorName = 'yellow';
+                } else { // 25% chance for red (0.75 to 1.00)
+                  randomColor = colors.red;
+                  colorName = 'red';
+                }
+
+                return (
+                  <div
+                    key={technique.name}
+                    className={styles.techniqueItem}
+                    onClick={() => handleTechniqueClick(technique)}
+                    data-color={colorName}
+                    style={{ borderLeftColor: randomColor }}
+                  >
+                    <span className={styles.techniqueName}>{technique.name}</span>
+                    {technique.count > 0 && (
+                      <span className={styles.techniqueCount}>
+                        {technique.count}
+                      </span>
+                    )}
+                  </div>
+                );
+              })}
             </div>
           </div>
         ))}
