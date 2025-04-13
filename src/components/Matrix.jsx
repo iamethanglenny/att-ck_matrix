@@ -6,18 +6,64 @@ import TechniqueDetail from './TechniqueDetail';
 const Matrix = () => {
   const [activeAttackType, setActiveAttackType] = useState('enterprise');
   const [selectedTechnique, setSelectedTechnique] = useState(null);
+  const [selectedActor, setSelectedActor] = useState('');
+  const [selectedRegion, setSelectedRegion] = useState('');
+  const [selectedIndustry, setSelectedIndustry] = useState('');
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
 
-  // Determine which data set to use based on activeAttackType
+  // Determine which data set to use based on activeAttackType and assign static colors
   const currentTactics = useMemo(() => {
+    let baseTactics;
     switch (activeAttackType) {
       case 'mobile':
-        return mobileMockTactics;
+        baseTactics = mobileMockTactics;
+        break;
       case 'ics':
-        return icsMockTactics; // Use the new ICS data
+        baseTactics = icsMockTactics;
+        break;
       case 'enterprise':
       default:
-        return mockTactics;
+        baseTactics = mockTactics;
+        break;
     }
+
+    // Assign a static random color to each technique once
+    return baseTactics.map(tactic => ({
+      ...tactic,
+      techniques: tactic.techniques.map(technique => {
+        if (technique.assignedColor) {
+          return technique; // Already has a color assigned
+        }
+        
+        // Assign a weighted random color (50% blue, 25% yellow, 25% red)
+        const colors = {
+          blue: '#4169E1',
+          yellow: '#FCC537',
+          red: '#FC5B3B'
+        };
+        let randomColor;
+        let colorName;
+        const rand = Math.random();
+
+        if (rand < 0.50) { // 50% chance for blue
+          randomColor = colors.blue;
+          colorName = 'blue';
+        } else if (rand < 0.75) { // 25% chance for yellow (0.50 to 0.75)
+          randomColor = colors.yellow;
+          colorName = 'yellow';
+        } else { // 25% chance for red (0.75 to 1.00)
+          randomColor = colors.red;
+          colorName = 'red';
+        }
+
+        return {
+          ...technique,
+          assignedColor: randomColor, // Store the assigned color
+          colorName: colorName        // Store the color name for data attribute
+        };
+      })
+    }));
   }, [activeAttackType]);
 
   // Calculate total techniques for each attack type
@@ -59,21 +105,33 @@ const Matrix = () => {
         <div className={styles.filterSection}>
           <div className={styles.filterControls}>
             <div className={styles.filterTitle}>Filter by:</div>
-            <select className={styles.filterSelect}>
+            <select 
+              className={`${styles.filterSelect} ${selectedActor ? styles.activeFilter : ''}`}
+              value={selectedActor}
+              onChange={(e) => setSelectedActor(e.target.value)}
+            >
               <option value="">Actor/Threat Group</option>
               {filterOptions.actors.map((actor) => (
                 <option key={actor} value={`APT ${actor}`}>{actor}</option>
               ))}
             </select>
 
-            <select className={styles.filterSelect}>
+            <select 
+              className={`${styles.filterSelect} ${selectedRegion ? styles.activeFilter : ''}`}
+              value={selectedRegion}
+              onChange={(e) => setSelectedRegion(e.target.value)}
+            >
               <option value="">Region</option>
               {filterOptions.regions.map((region) => (
                 <option key={region} value={`North ${region}`}>{region}</option>
               ))}
             </select>
 
-            <select className={styles.filterSelect}>
+            <select 
+              className={`${styles.filterSelect} ${selectedIndustry ? styles.activeFilter : ''}`}
+              value={selectedIndustry}
+              onChange={(e) => setSelectedIndustry(e.target.value)}
+            >
               <option value="">Industry</option>
               {filterOptions.industries.map((industry) => (
                 <option key={industry} value={`Finance ${industry}`}>{industry}</option>
@@ -85,19 +143,25 @@ const Matrix = () => {
               <input
                 type="text"
                 placeholder="start"
+                value={startDate}
+                onChange={(e) => setStartDate(e.target.value)}
                 onFocus={(e) => e.target.type = 'date'}
                 onBlur={(e) => {
                   if (!e.target.value) e.target.type = 'text';
                 }}
+                className={`${startDate ? styles.activeFilter : ''}`}
               />
               <span>—</span>
               <input
                 type="text"
                 placeholder="end"
+                value={endDate}
+                onChange={(e) => setEndDate(e.target.value)}
                 onFocus={(e) => e.target.type = 'date'}
                 onBlur={(e) => {
                   if (!e.target.value) e.target.type = 'text';
                 }}
+                className={`${endDate ? styles.activeFilter : ''}`}
               />
             </div>
             <div className={styles.exportControls}>
@@ -152,34 +216,16 @@ const Matrix = () => {
             <span className={styles.tacticCount}>{tactic.techniques.length} techniques</span>
             <div className={styles.techniqueList}>
               {tactic.techniques.map((technique) => {
-                // Assign a weighted random color (50% blue, 25% yellow, 25% red)
-                const colors = {
-                  blue: '#4F9EED',
-                  yellow: '#FCC537',
-                  red: '#FC5B3B'
-                };
-                let randomColor;
-                let colorName;
-                const rand = Math.random();
-
-                if (rand < 0.50) { // 50% chance for blue
-                  randomColor = colors.blue;
-                  colorName = 'blue';
-                } else if (rand < 0.75) { // 25% chance for yellow (0.50 to 0.75)
-                  randomColor = colors.yellow;
-                  colorName = 'yellow';
-                } else { // 25% chance for red (0.75 to 1.00)
-                  randomColor = colors.red;
-                  colorName = 'red';
-                }
-
+                // Use the pre-assigned color
+                const { assignedColor, colorName } = technique;
+                
                 return (
                   <div
                     key={technique.name}
                     className={styles.techniqueItem}
                     onClick={() => handleTechniqueClick(technique)}
-                    data-color={colorName}
-                    style={{ borderLeftColor: randomColor }}
+                    data-color={colorName} // Use pre-assigned color name
+                    style={{ borderLeftColor: assignedColor }} // Use pre-assigned color
                   >
                     <span className={styles.techniqueName}>{technique.name}</span>
                     {technique.count > 0 && (

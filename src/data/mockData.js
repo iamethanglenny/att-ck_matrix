@@ -89,7 +89,31 @@ export const mockTactics = [
   {
     name: 'Privilege Escalation',
     techniques: [
-      { name: 'Abuse Elevation Control Mechanism', count: 6 },
+      {
+        name: 'Abuse Elevation Control Mechanism', 
+        count: 6, 
+        id: 'T1548',
+        version: '1.1',
+        created: 'Dec 31, 2019',
+        last_modified: 'Dec 31, 2019',
+        tactic: 'Privilege Escalation, Defense Evasion',
+        platforms: ['Windows', 'Linux', 'macOS'],
+        data_sources: ['File Monitoring', 'Process Monitoring', 'Process Command-Line Parameters'],
+        selectedMatches: 42,
+        totalMatches: 124,
+        hackerGroups: ['Lazarus', 'PlugX', 'Gamaredon'],
+        industries: ['Financial Services', 'Defence', 'Government-National'],
+        regions: ['Europe', 'Asia', 'North Africa'],
+        countries: [
+          { name: 'Germany', code: '🇩🇪' },
+          { name: 'China', code: '🇨🇳' }, 
+          { name: 'Egypt', code: '🇪🇬' },
+          { name: 'United Kingdom', code: '🇬🇧' }
+        ],
+        subTechniques: [],
+        executionSamples: [],
+        mainDescription: 'Placeholder for main description content...'
+      },
       { name: 'Access Token Manipulation', count: 5 },
       { name: 'Account Manipulation', count: 7 },
       { name: 'Boot or Logon Autostart Execution', count: 14 },

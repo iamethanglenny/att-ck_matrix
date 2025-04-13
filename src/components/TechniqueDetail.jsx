@@ -18,12 +18,12 @@ const DEFAULT_TECHNIQUE = {
 };
 
 const TechniqueDetail = ({ technique, onClose }) => {
-  const formatDate = (date) => {
-    return new Date(date).toLocaleDateString('en-US', {
-      day: 'numeric',
-      month: 'short',
-      year: 'numeric'
-    });
+  if (!technique) return null;
+
+  const formatDate = (dateString) => {
+    if (!dateString) return 'N/A';
+    const options = { year: 'numeric', month: 'short', day: 'numeric' };
+    return new Date(dateString).toLocaleDateString(undefined, options);
   };
 
   // Merge the technique with default values
@@ -39,142 +39,85 @@ const TechniqueDetail = ({ technique, onClose }) => {
   };
 
   return (
-    <div className={styles.overlay} onClick={onClose}>
-      <div className={styles.modal} onClick={e => e.stopPropagation()}>
-        <div className={styles.header}>
-          <h1>{fullTechnique.name}</h1>
-          <div className={styles.metadata}>
-            Created at {formatDate(fullTechnique.created)} · Last modified {formatDate(fullTechnique.modified)}
+    <div className={styles.modalOverlay} onClick={onClose}>
+      <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
+        <button className={styles.closeButton} onClick={onClose}>×</button>
+        
+        <h2 className={styles.techniqueTitle}>{fullTechnique.name}</h2>
+        <p className={styles.techniqueMeta}>
+          Created at {formatDate(fullTechnique.created)} • Last modified {formatDate(fullTechnique.modified)}
+        </p>
+
+        <div className={styles.mainGrid}>
+          {/* Left Column */}
+          <div className={styles.leftColumn}>
+            <div className={styles.section}>
+              <h3 className={styles.sectionTitle}>Technique Info</h3>
+              <div className={styles.infoGrid}>
+                <span className={styles.infoLabel}>ID</span>
+                <span className={styles.infoValue}>{fullTechnique.id || 'N/A'}</span>
+
+                <span className={styles.infoLabel}>Version</span>
+                <span className={styles.infoValue}>{fullTechnique.version || 'N/A'}</span>
+
+                <span className={styles.infoLabel}>Tactic</span>
+                <span className={styles.infoValue}>{fullTechnique.tactic || 'N/A'}</span>
+
+                <span className={styles.infoLabel}>Platforms</span>
+                <span className={styles.infoValue}>{(fullTechnique.platforms || []).join(' • ') || 'N/A'}</span>
+
+                <span className={styles.infoLabel}>Data Sources</span>
+                <span className={styles.infoValue}>{(fullTechnique.dataSources || []).join(' • ') || 'N/A'}</span>
+              </div>
+            </div>
+
+            <div className={styles.section}>
+              <h3 className={styles.sectionTitle}>Execution Samples</h3>
+              <div className={styles.placeholderBox}>
+                {/* Placeholder for Execution Samples content */}
+              </div>
+            </div>
+
+            <div className={styles.section}>
+              <h3 className={styles.sectionTitle}>Sub-Techniques</h3>
+              <div className={styles.placeholderBox}>
+                 {/* Placeholder for Sub-Techniques content */}
+              </div>
+            </div>
+          </div>
+
+          {/* Right Column */}
+          <div className={styles.rightColumn}>
+            <div className={styles.summaryBox}>
+              <p>Selected Matches: <span className={styles.matchCount}>{fullTechnique.selectedMatches || 'N/A'}</span></p>
+              <p>Total Matches: <span className={styles.matchCount}>{fullTechnique.totalMatches || 'N/A'}</span></p>
+              
+              <div className={styles.infoGrid}>
+                <span className={styles.infoLabel}>Hacker Group</span>
+                <span className={styles.infoValue}>{(fullTechnique.hackerGroups || []).join(' • ') || 'N/A'}</span>
+
+                <span className={styles.infoLabel}>Industry</span>
+                <span className={styles.infoValue}>{(fullTechnique.industries || []).join(' • ') || 'N/A'}</span>
+
+                <span className={styles.infoLabel}>Region</span>
+                <span className={styles.infoValue}>{(fullTechnique.regions || []).join(' • ') || 'N/A'}</span>
+
+                <span className={styles.infoLabel}>Country</span>
+                <span className={styles.infoValue}>
+                  {(fullTechnique.countries || []).map(c => `${c.code} ${c.name}`).join(' • ') || 'N/A'}
+                </span>
+              </div>
+            </div>
+
+            <div className={styles.section}>
+              <h3 className={styles.sectionTitle}>Main</h3>
+              <div className={styles.placeholderBoxLarge}>
+                {fullTechnique.description || 'Main description area...'}
+              </div>
+            </div>
           </div>
         </div>
 
-        <div className={styles.content}>
-          <section className={styles.techniqueInfo}>
-            <h2>Technique info</h2>
-            <div className={styles.infoGrid}>
-              <div className={styles.infoItem}>
-                <label>ID</label>
-                <span>{fullTechnique.id}</span>
-              </div>
-              <div className={styles.infoItem}>
-                <label>Version</label>
-                <span>{fullTechnique.version}</span>
-              </div>
-              <div className={styles.infoItem}>
-                <label>Tactic</label>
-                <span>{fullTechnique.tactic}</span>
-              </div>
-            </div>
-          </section>
-
-          <section className={styles.dataSources}>
-            <div className={styles.sourceHeader}>
-              <h3>Data Sources</h3>
-            </div>
-            <div className={styles.sourceList}>
-              {fullTechnique.dataSources.map((source, index) => (
-                <span key={index} className={styles.sourceItem}>{source}</span>
-              ))}
-            </div>
-          </section>
-
-          <section className={styles.platforms}>
-            <div className={styles.platformHeader}>
-              <h3>Platforms</h3>
-            </div>
-            <div className={styles.platformList}>
-              {fullTechnique.platforms.map((platform, index) => (
-                <span key={index} className={styles.platformItem}>{platform}</span>
-              ))}
-            </div>
-          </section>
-
-          <section className={styles.stats}>
-            <div className={styles.statsItem}>
-              <span>Selected matches</span>
-              <div className={styles.statsValue}>{fullTechnique.selectedMatches}</div>
-            </div>
-            <div className={styles.statsItem}>
-              <span>Total matches</span>
-              <div className={styles.statsValue}>{fullTechnique.totalMatches}</div>
-            </div>
-          </section>
-
-          {fullTechnique.hackerGroups.length > 0 && (
-            <section className={styles.groups}>
-              <h3>Hacker groups</h3>
-              <div className={styles.groupList}>
-                {fullTechnique.hackerGroups.map((group, index) => (
-                  <span key={index} className={styles.groupItem}>{group}</span>
-                ))}
-              </div>
-            </section>
-          )}
-
-          {(fullTechnique.industries.length > 0 || 
-            fullTechnique.regions.length > 0 || 
-            fullTechnique.countries.length > 0) && (
-            <section className={styles.targeting}>
-              {fullTechnique.industries.length > 0 && (
-                <div className={styles.targetingSection}>
-                  <h3>Industry</h3>
-                  <div className={styles.targetList}>
-                    {fullTechnique.industries.map((industry, index) => (
-                      <span key={index} className={styles.targetItem}>{industry}</span>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              {fullTechnique.regions.length > 0 && (
-                <div className={styles.targetingSection}>
-                  <h3>Region</h3>
-                  <div className={styles.targetList}>
-                    {fullTechnique.regions.map((region, index) => (
-                      <span key={index} className={styles.targetItem}>{region}</span>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              {fullTechnique.countries.length > 0 && (
-                <div className={styles.targetingSection}>
-                  <h3>Country</h3>
-                  <div className={styles.targetList}>
-                    {fullTechnique.countries.map((country, index) => (
-                      <div key={index} className={styles.countryItem}>
-                        <img 
-                          src={`/flags/${country.code.toLowerCase()}.svg`} 
-                          alt={country.name}
-                          className={styles.flag}
-                        />
-                        <span>{country.name}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </section>
-          )}
-
-          <section className={styles.mainContent}>
-            <h2>Main</h2>
-            <div className={styles.description}>
-              {fullTechnique.description}
-            </div>
-          </section>
-
-          <section className={styles.mitigations}>
-            <h2>Mitigations</h2>
-            <div className={styles.mitigationList}>
-              {fullTechnique.mitigations.map((mitigation, index) => (
-                <div key={index} className={styles.mitigationItem}>
-                  {mitigation}
-                </div>
-              ))}
-            </div>
-          </section>
-        </div>
       </div>
     </div>
   );

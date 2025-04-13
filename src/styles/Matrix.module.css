@@ -41,7 +41,7 @@
 }
 
 .actorTag {
-  background-color: #414868;
+  background-color: #4169E1;
   color: #fff;
   padding: 0.25rem 0.75rem;
   border-radius: 12px;
@@ -109,7 +109,8 @@
   display: none;
 }
 
-.filterSelect:hover {
+.filterSelect:hover,
+.filterSelect.activeFilter {
   border-color: #fff;
   color: #fff;
   background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
@@ -123,7 +124,7 @@
 
 .dateFilter input,
 .dateFilter input[type="date"] {
-  width: 100px;  /* Reduced from auto/120px to match date field size */
+  width: 115px;  /* Increased from 100px */
   padding: 0.5rem 0.75rem;
   background: none;
   border: 1px solid #414868;
@@ -143,24 +144,31 @@
   transition: color 0.2s;
 }
 
-.dateFilter input:hover {
+.dateFilter input:hover,
+.dateFilter input.activeFilter {
   border-color: #fff;
   color: #fff;
 }
 
-.dateFilter input:hover::placeholder {
+.dateFilter input:hover::placeholder,
+.dateFilter input.activeFilter::placeholder {
   color: #fff;
 }
 
 /* Specific styles for the start date input */
-.dateFilter input:first-child {
+.dateFilter input:first-child:hover,
+.dateFilter input:first-child.activeFilter {
   cursor: pointer;
 }
 
 /* Specific styles for the end date input */
 .dateFilter input:last-child {
   background-image: none;
-  cursor: pointer;
+}
+
+.dateFilter input:last-child:hover,
+.dateFilter input:last-child.activeFilter {
+   cursor: pointer; /* Keep pointer for consistency when active */
 }
 
 /* Calendar picker styles */
@@ -251,15 +259,21 @@
   left: 0;
   right: 0;
   height: 2px;
-  background-color: #7aa2f7;
+  background-color: #4169E1;
 }
 
 .attackCount {
-  background-color: #414868;
-  color: #fff;
+  color: rgba(65, 105, 225, 0.50); /* Royal Blue text at 50% opacity */
   padding: 0.1rem 0.5rem;
   border-radius: 12px;
   font-size: 0.8rem;
+  background-color: transparent; /* Transparent background */
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.attackTypeButton.active .attackCount {
+  background-color: #4169E1; /* Solid Royal Blue background */
+  color: #fff; /* White text */
 }
 
 .matrix {
@@ -358,4 +372,16 @@
 .exportButton:hover {
   border-color: #fff;
   color: #fff;
+}
+
+.techniqueMeta {
+  font-size: 0.8rem;
+  color: #4169E1;
+  margin-bottom: 2rem;
+}
+
+.infoLabel {
+  color: #4169E1;
+  font-weight: 500;
+  text-align: right;
 } 

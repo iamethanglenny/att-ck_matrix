@@ -221,4 +221,133 @@
   border-radius: 4px;
   color: #a9b1d6;
   line-height: 1.5;
+}
+
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modalContent {
+  background-color: #0d1117;
+  color: #a9b1d6;
+  padding: 2rem 3rem;
+  border-radius: 8px;
+  width: 80%;
+  max-width: 1200px;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+  border: 1px solid #414868;
+}
+
+.closeButton {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: none;
+  border: none;
+  color: #a9b1d6;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.techniqueTitle {
+  color: #fff;
+  font-size: 1.8rem;
+  margin-bottom: 0.25rem;
+}
+
+.techniqueMeta {
+  font-size: 0.8rem;
+  color: #7aa2f7;
+  margin-bottom: 2rem;
+}
+
+.mainGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+}
+
+.leftColumn, .rightColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.section {
+  /* No specific styles needed unless for spacing */
+}
+
+.sectionTitle {
+  color: #fff;
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+}
+
+.infoGrid {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.75rem 1.5rem;
+  align-items: center;
+}
+
+.infoLabel {
+  color: #7aa2f7;
+  font-weight: 500;
+  text-align: right;
+}
+
+.infoValue {
+  color: #a9b1d6;
+}
+
+.placeholderBox {
+  background-color: rgba(65, 72, 104, 0.1);
+  border: 1px dashed #414868;
+  border-radius: 4px;
+  min-height: 150px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #414868;
+}
+
+.placeholderBoxLarge {
+  background-color: rgba(65, 72, 104, 0.1);
+  border: 1px dashed #414868;
+  border-radius: 4px;
+  min-height: 300px; /* Larger placeholder */
+  padding: 1rem;
+  color: #a9b1d6;
+  line-height: 1.6;
+}
+
+.summaryBox {
+  background-color: rgba(65, 72, 104, 0.1);
+  border: 1px solid #414868;
+  padding: 1.5rem;
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.summaryBox p {
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+.matchCount {
+  color: #fff;
+  font-weight: bold;
 } 
