@@ -35,49 +35,52 @@ const Matrix = () => {
           </div>
         </div>
 
-        {/* Filter Bar */}
-        <div className={styles.filterBar}>
-          <select className={styles.filterSelect}>
-            <option value="">Actor/Threat Group</option>
-            {filterOptions.actors.map((actor) => (
-              <option key={actor} value={actor}>{actor}</option>
-            ))}
-          </select>
+        {/* Filter Section */}
+        <div className={styles.filterSection}>
+          <div className={styles.filterTitle}>Filter by:</div>
+          <div className={styles.filterBar}>
+            <select className={styles.filterSelect}>
+              <option value="">Actor/Threat Group</option>
+              {filterOptions.actors.map((actor) => (
+                <option key={actor} value={actor}>{actor}</option>
+              ))}
+            </select>
 
-          <select className={styles.filterSelect}>
-            <option value="">Region</option>
-            {filterOptions.regions.map((region) => (
-              <option key={region} value={region}>{region}</option>
-            ))}
-          </select>
+            <select className={styles.filterSelect}>
+              <option value="">Region</option>
+              {filterOptions.regions.map((region) => (
+                <option key={region} value={region}>{region}</option>
+              ))}
+            </select>
 
-          <select className={styles.filterSelect}>
-            <option value="">Industry</option>
-            {filterOptions.industries.map((industry) => (
-              <option key={industry} value={industry}>{industry}</option>
-            ))}
-          </select>
+            <select className={styles.filterSelect}>
+              <option value="">Industry</option>
+              {filterOptions.industries.map((industry) => (
+                <option key={industry} value={industry}>{industry}</option>
+              ))}
+            </select>
 
-          <div className={styles.dateFilter}>
-            <input
-              type="text"
-              className={styles.dateInput}
-              placeholder="start"
-              onFocus={(e) => e.target.type = 'date'}
-              onBlur={(e) => {
-                if (!e.target.value) e.target.type = 'text';
-              }}
-            />
-            <span>—</span>
-            <input
-              type="text"
-              className={styles.dateInput}
-              placeholder="end"
-              onFocus={(e) => e.target.type = 'date'}
-              onBlur={(e) => {
-                if (!e.target.value) e.target.type = 'text';
-              }}
-            />
+            <div className={styles.dateFilter}>
+              <input
+                type="text"
+                className={styles.dateInput}
+                placeholder="start"
+                onFocus={(e) => e.target.type = 'date'}
+                onBlur={(e) => {
+                  if (!e.target.value) e.target.type = 'text';
+                }}
+              />
+              <span>—</span>
+              <input
+                type="text"
+                className={styles.dateInput}
+                placeholder="end"
+                onFocus={(e) => e.target.type = 'date'}
+                onBlur={(e) => {
+                  if (!e.target.value) e.target.type = 'text';
+                }}
+              />
+            </div>
           </div>
         </div>
 
@@ -99,10 +102,13 @@ const Matrix = () => {
       {/* Matrix Grid */}
       <div className={styles.matrix}>
         {mockTactics.map((tactic) => (
-          <div key={tactic.name} className={styles.tacticColumn}>
-            <h2 className={styles.tacticHeader}>
-              {tactic.name}
-            </h2>
+          <div 
+            key={tactic.name} 
+            className={styles.tacticColumn}
+            data-tactic={tactic.name}
+          >
+            <h2 className={styles.tacticHeader}>{tactic.name}</h2>
+            <span className={styles.tacticCount}>{tactic.techniques.length} techniques</span>
             <div className={styles.techniqueList}>
               {tactic.techniques.map((technique) => (
                 <div
@@ -110,7 +116,7 @@ const Matrix = () => {
                   className={styles.techniqueItem}
                   onClick={() => handleTechniqueClick(technique)}
                 >
-                  <span>{technique.name}</span>
+                  <span className={styles.techniqueName}>{technique.name}</span>
                   {technique.count > 0 && (
                     <span className={styles.techniqueCount}>
                       {technique.count}
