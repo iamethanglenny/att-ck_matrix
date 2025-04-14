@@ -69,7 +69,7 @@ const Matrix = () => {
   // Calculate total techniques for each attack type
   const attackTypes = [
     { id: 'enterprise', label: 'Enterprise attack', count: mockTactics.reduce((sum, t) => sum + t.techniques.length, 0) },
-    { id: 'mobile', label: 'Mobile attack', count: mobileMockTactics.reduce((sum, t) => sum + t.techniques.length, 0) },
+    // { id: 'mobile', label: 'Mobile attack', count: mobileMockTactics.reduce((sum, t) => sum + t.techniques.length, 0) }, // Commented out Mobile
     { id: 'ics', label: 'ICS attack', count: icsMockTactics.reduce((sum, t) => sum + t.techniques.length, 0) } // Use actual ICS count
   ];
 
